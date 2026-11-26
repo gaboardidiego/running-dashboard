@@ -1,0 +1,45 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - uses: actions/configure-pages@v5
+      - name: Build
+        run: npm run build -- --base="/${GITHUB_REPOSITORY#*/}/"
+      - name: Provide empty dataset when none is committed
+        run: |
+          if [ ! -f dist/data/activities.json ]; then
+            echo "No activity dataset committed; deploying an empty dashboard."
+            mkdir -p dist/data
+            printf '{"version":1,"activities":[]}\n' > dist/data/activities.json
+          fi
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

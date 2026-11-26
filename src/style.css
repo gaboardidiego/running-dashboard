@@ -211,6 +211,7 @@ h1 {
 }
 .filters {
   display: flex;
+  flex-wrap: wrap;
   gap: 9px;
 }
 select {
@@ -345,6 +346,60 @@ h2 {
 .chart-container {
   position: relative;
   height: 225px;
+}
+.daily-panel {
+  margin-bottom: 18px;
+}
+.daily-legend {
+  margin: 20px 0 14px;
+}
+.daily-key {
+  background: #a7bd84;
+}
+.legend-line {
+  width: 16px;
+  height: 2px;
+}
+.weekly-key {
+  background: #527a5a;
+}
+.monthly-key {
+  background: #cc8456;
+}
+.daily-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  color: #6d8070;
+  font-size: 11px;
+  margin-bottom: 12px;
+}
+.daily-controls label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.daily-controls input,
+.daily-controls button {
+  border: 1px solid #e3e9df;
+  border-radius: 6px;
+  background: #fff;
+  color: #566a5c;
+  padding: 6px;
+}
+.daily-controls button:disabled {
+  opacity: 0.5;
+}
+#daily-range-error {
+  color: #a84032;
+}
+.daily-chart-container {
+  height: 280px;
+}
+#daily-chart {
+  touch-action: none;
+  cursor: crosshair;
 }
 .donut-wrap {
   position: relative;

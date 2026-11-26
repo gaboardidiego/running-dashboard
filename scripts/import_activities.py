@@ -21,6 +21,7 @@ class Activity(TypedDict):
     elapsed_time_s: float | None
     elevation_gain_m: float | None
     average_heart_rate: float | None
+    relative_effort: float | None
 
 
 def number(value: str, field: str, row_number: int) -> float | None:
@@ -62,6 +63,8 @@ def read_export(path: Path) -> list[Activity]:
         if headers.count("Distance") < 2:
             raise ValueError("Expected both summary and detailed Distance columns")
         indices = {field: len(headers) - 1 - headers[::-1].index(field) for field in required}
+        if "Relative Effort" in headers:
+            indices["Relative Effort"] = len(headers) - 1 - headers[::-1].index("Relative Effort")
         activities: list[Activity] = []
         seen: set[str] = set()
         for row_number, row in enumerate(reader, 2):
@@ -100,6 +103,9 @@ def read_export(path: Path) -> list[Activity]:
                     ),
                     "average_heart_rate": number(
                         values["Average Heart Rate"], "Average Heart Rate", row_number
+                    ),
+                    "relative_effort": number(
+                        values.get("Relative Effort", ""), "Relative Effort", row_number
                     ),
                 }
             )

@@ -52,6 +52,32 @@ def test_export_uses_detailed_distance_and_optional_values(tmp_path):
     assert activity["distance_m"] == 12345
     assert activity["date"] == "2026-11-24T17:21:57"
     assert activity["average_heart_rate"] is None
+    assert activity["relative_effort"] is None
+
+
+def test_relative_effort_imports_values_and_preserves_missing_and_zero(tmp_path):
+    source = tmp_path / "activities.csv"
+    with source.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.writer(stream)
+        writer.writerow([*HEADERS, "Relative Effort", "Relative Effort"])
+        writer.writerows(
+            [
+                [*row("1"), "58", "58.0"],
+                [*row("2"), "", ""],
+                [*row("3"), "0", "0.0"],
+            ]
+        )
+    assert [activity["relative_effort"] for activity in read_export(source)] == [58, None, 0]
+
+
+def test_invalid_relative_effort_is_rejected(tmp_path):
+    source = tmp_path / "activities.csv"
+    with source.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.writer(stream)
+        writer.writerow([*HEADERS, "Relative Effort"])
+        writer.writerow([*row(), "-1"])
+    with pytest.raises(ValueError, match="invalid Relative Effort"):
+        read_export(source)
 
 
 def test_merge_updates_matching_id_and_keeps_old_activities(tmp_path):
