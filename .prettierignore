@@ -1,0 +1,5 @@
+export_*/
+public/data/
+uv.lock
+package-lock.json
+dist/

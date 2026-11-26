@@ -1,0 +1,23 @@
+node_modules/
+dist/
+coverage/
+.venv/
+.ruff_cache/
+.pytest_cache/
+.ty_cache/
+__pycache__/
+*.py[cod]
+.coverage
+htmlcov/
+export_*/
+public/data/
+
+# Local environment and temporary files
+.env
+.env.*
+!.env.example
+*.tmp
+
+# Local editor and operating-system files
+.vscode/settings.json
+.DS_Store
