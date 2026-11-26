@@ -5,6 +5,7 @@ import {
   filterActivities,
   formatDistance,
   formatDuration,
+  stravaActivityUrl,
   summarize,
   typeTotals,
   volumeTotals,
@@ -206,7 +207,12 @@ function renderTable(filtered) {
           : activity.relative_effort.toLocaleString("en", {
               maximumFractionDigits: 2,
             });
-      return `<tr><td><div class="activity-cell"><span class="activity-icon">${icon("activity", 18)}</span><div><strong>${escapeHtml(activity.name || "Untitled activity")}</strong><span>${escapeHtml(activity.type)}</span></div></div></td><td>${formattedDate}</td><td class="table-metric">${formatDistance(activity.distance_m)}</td><td>${formatDuration(activity.moving_time_s)}</td><td>${elevation}</td><td>${effort}</td><td class="row-arrow">${icon("arrow", 15)}</td></tr>`;
+      const name = escapeHtml(activity.name || "Untitled activity");
+      const url = stravaActivityUrl(activity.id);
+      const activityName = url
+        ? `<a class="activity-link" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="View ${name} on Strava (opens in a new tab)">${name}</a>`
+        : `<span title="Strava link unavailable">${name}</span>`;
+      return `<tr><td><div class="activity-cell"><span class="activity-icon">${icon("activity", 18)}</span><div><strong>${activityName}</strong><span>${escapeHtml(activity.type)}</span></div></div></td><td>${formattedDate}</td><td class="table-metric">${formatDistance(activity.distance_m)}</td><td>${formatDuration(activity.moving_time_s)}</td><td>${elevation}</td><td>${effort}</td><td class="row-arrow">${url ? icon("arrow", 15) : ""}</td></tr>`;
     })
     .join("");
   $("#table-empty").hidden = matches.length > 0;

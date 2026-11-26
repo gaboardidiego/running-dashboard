@@ -16,7 +16,9 @@ date range, averages use the days available so far; zooming does not recalculate
 For Relative Effort, days with activities but no scores are excluded from averages, while
 days with some scores use the available scores. Drag across the chart or use the date fields
 to zoom, and reset to see the full filtered range.
-The activity journal also shows Strava's Relative Effort when present; missing scores appear as a dash.
+The activity journal links activity names to Strava in a new tab and shows Strava's Relative
+Effort when present; missing scores appear as a dash. Viewing an activity on Strava depends on
+its privacy settings and your access to it.
 
 ## Get started
 

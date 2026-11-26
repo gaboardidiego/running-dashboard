@@ -4,6 +4,7 @@ import {
   escapeHtml,
   filterActivities,
   formatDistance,
+  stravaActivityUrl,
   summarize,
   typeTotals,
   volumeTotals,
@@ -33,6 +34,15 @@ const activities = [
 ];
 
 describe("activity data", () => {
+  it("builds Strava links only for numeric activity IDs", () => {
+    expect(stravaActivityUrl("21112297418")).toBe(
+      "https://www.strava.com/activities/21112297418",
+    );
+    expect(stravaActivityUrl("")).toBeNull();
+    expect(stravaActivityUrl(undefined)).toBeNull();
+    expect(stravaActivityUrl('123" onclick="alert(1)')).toBeNull();
+  });
+
   it("filters type and year, and searches names, descriptions and types case-insensitively", () => {
     expect(
       filterActivities(activities, {

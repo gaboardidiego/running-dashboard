@@ -17,6 +17,12 @@ export function filterActivities(
   );
 }
 
+export function stravaActivityUrl(id) {
+  return typeof id === "string" && /^\d+$/.test(id)
+    ? `https://www.strava.com/activities/${id}`
+    : null;
+}
+
 export function summarize(activities) {
   return activities.reduce(
     (total, activity) => ({
